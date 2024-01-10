@@ -1,0 +1,78 @@
+plugins {
+    id 'java-library'
+    id 'io.qameta.allure' version '2.9.6'
+}
+
+group 'oleksandr'
+
+repositories {
+    mavenCentral()
+}
+
+def allureVersion = '2.21.0',
+    selenideVersion = "6.16.0",
+    testngVersion = '7.7.0',
+    jsonVersion = '20230227',
+    commonsCodecVersion = '1.15',
+    aspectjweaverVersion = '1.9.19',
+    assertjCoreVersion = '3.24.2',
+    javaClientVersion = '8.5.1',
+    allureTestngVersion = '2.21.0',
+    slf4jSimpleVersion = '2.0.7'
+
+
+        allure
+{
+    report {
+        version.set(allureVersion)
+    }
+    adapter {
+        aspectjWeaver.set(true)
+        frameworks {
+            testNg { // изменено с junit5 на testNg
+                adapterVersion.set(allureVersion)
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation "org.json:json:$jsonVersion",
+            "commons-codec:commons-codec:$commonsCodecVersion"
+    testImplementation "org.aspectj:aspectjweaver:$aspectjweaverVersion",
+            "org.assertj:assertj-core:$assertjCoreVersion",
+            "com.codeborne:selenide:$selenideVersion",
+            "io.appium:java-client:$javaClientVersion",
+            "io.qameta.allure:allure-selenide:$allureVersion",
+            "org.testng:testng:$testngVersion",
+            "io.qameta.allure:allure-testng:$allureTestngVersion",
+            "org.slf4j:slf4j-simple:$slf4jSimpleVersion"
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+tasks.withType(Test).configureEach {
+    systemProperties(System.getProperties())
+    useTestNG()
+
+    testLogging {
+        lifecycle {
+            events "started", "skipped", "failed", "standard_error", "standard_out"
+            exceptionFormat "short"
+        }
+    }
+    finalizedBy 'allureReport'
+}
+
+
+tasks.register('androidtest', Test) {
+    useTestNG() {
+        suites "src/test/resources/suites/androidSuite.xml"
+    }
+}
+
+
+
+
