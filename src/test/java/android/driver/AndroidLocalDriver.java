@@ -29,7 +29,7 @@ public class AndroidLocalDriver implements WebDriverProvider {
         desiredCapabilities.setCapability(PLATFORM_NAME, ANDROID);
         desiredCapabilities.setCapability(AUTOMATION_NAME, "uiautomator2");
         desiredCapabilities.setCapability("ignoreHiddenApiPolicyError", true);
-        desiredCapabilities.setCapability(UDID, "P7RO8L85MBVW6XMJ");
+        desiredCapabilities.setCapability(UDID, "PJLZUSTGEQUSSSOR");
 
         desiredCapabilities.setCapability(APP_PACKAGE, appPackage(environment));
         desiredCapabilities.setCapability(APP_ACTIVITY, appActivity(environment));
